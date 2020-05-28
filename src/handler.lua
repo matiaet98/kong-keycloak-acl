@@ -40,6 +40,11 @@ end
 
 function Authorized(token_endpoint, audience, access_token, uri)
     local httpc = http.new()
+    local body = {}
+    body.audience = audience
+    body.grant_type = "urn:ietf:params:oauth:grant-type:uma-ticket"
+    body.uri = uri
+
     local res, error = httpc:request_uri(token_endpoint, {
         method = "POST",
         ssl_verify = false, --total, ya lo deberia haber verificado el oidc
@@ -47,11 +52,7 @@ function Authorized(token_endpoint, audience, access_token, uri)
             ["Content-Type"] = "application/x-www-form-urlencoded",
             ["Authorization"] = "Bearer " .. access_token
         },
-        body = {
-            audience = audience,
-            grant_type = "urn:ietf:params:oauth:grant-type:uma-ticket",
-            uri = uri
-        }
+        body = ngx.encode_args(body)
     })
     if not res then
         ngx.log(ngx.ERROR, error)
