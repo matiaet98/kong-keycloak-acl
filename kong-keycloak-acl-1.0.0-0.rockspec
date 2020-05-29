@@ -1,5 +1,5 @@
 package = "kong-keycloak-acl"
-version = "0.0.5-0"
+version = "1.0.0-0"
 source = {
    url = "git+https://github.com/matiaet98/kong-keycloak-acl.git"
 }
