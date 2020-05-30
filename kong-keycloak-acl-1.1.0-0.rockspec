@@ -9,9 +9,7 @@ description = {
    homepage = "https://github.com/matiaet98/kong-keycloak-acl.git",
    license = "Apache 2.0"
 }
-dependencies = {
-    "kong-oidc ~> 1.1.0-0"
-}
+dependencies = {}
 build = {
    type = "builtin",
    modules = {
