@@ -1,7 +1,8 @@
 return {
     no_consumer = true,
     fields = {
-        token_endpoint = { type = "string", required = false },
-        audience = { type = "string", required = true }
+        audience = { type = "string", required = true },
+        resource = { type = "string", required = false },
+        scope = { type = "string", required = false },
     }
 }
