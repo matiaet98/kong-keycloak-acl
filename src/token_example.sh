@@ -1,43 +1,21 @@
-access_token=`curl -X POST -k --silent -H 'Content-Type: application/x-www-form-urlencoded' 'https://keycloak:8443/auth/realms/development/protocol/openid-connect/token' \
---data 'username=mati&password=faklmo09.&client_id=test-app-2&grant_type=password&client_secret=2bf49731-9540-45e8-baae-529ab64c8b89' | jq -r .access_token`
+response1=`curl -k -L --silent --location --request POST 'https://keycloak:8443/auth/realms/development/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'grant_type=password' \
+--data-urlencode 'username=user1' \
+--data-urlencode 'password=user1' \
+--data-urlencode 'client_id=test-app1'`
 
-curl -X POST -k --silent \
-'https://keycloak:8443/auth/realms/development/protocol/openid-connect/token' \
--H "Authorization: Bearer ${access_token}" \
---data "audience=test-app-2" \
---data "grant_type=urn:ietf:params:oauth:grant-type:uma-ticket"
+ access_token=`echo ${response1} | jq -r .access_token`
 
-  curl -X POST \
-  https://${host}:${port}/auth/realms/${realm}/protocol/openid-connect/token \
-  -H "Authorization: Bearer ${access_token}" \
-  --data "grant_type=urn:ietf:params:oauth:grant-type:uma-ticket" \
-  --data "audience={resource_server_client_id}"
+echo ${response1}
+echo "---------------------------------------------------------------------"
 
-  curl -X POST \
-  https://${host}:${port}/auth/realms/${realm}/protocol/openid-connect/token \
-  -H "Authorization: Bearer ${access_token}" \
-  --data "grant_type=urn:ietf:params:oauth:grant-type:uma-ticket" \
-  --data "ticket=${permission_ticket}
+response2=`curl -k -L -i --silent --location --request POST 'https://keycloak:8443/auth/realms/development/protocol/openid-connect/token' \
+--header "Authorization: Bearer ${access_token}" \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'grant_type=urn:ietf:params:oauth:grant-type:uma-ticket' \
+--data-urlencode 'response_mode=decision' \
+--data-urlencode 'audience=kong' \
+--data-urlencode 'permission=urn:kong:resources:test#test-app1:edit'`
 
-curl -X POST -k -H 'Content-Type: application/x-www-form-urlencoded' -i 'https://keycloak:8443/auth/realms/development/protocol/openid-connect/token' \
---data 'username=mati&password=faklmo09.&client_id=test-app-2&grant_type=password&client_secret=2bf49731-9540-45e8-baae-529ab64c8b89'
-
-curl -X POST \
-  https://${host}:${port}/auth/realms/${realm}/protocol/openid-connect/token \
-  -H "Authorization: Bearer ${access_token}" \
-  --data "grant_type=urn:ietf:params:oauth:grant-type:uma-ticket" \
-  --data "audience={resource_server_client_id}" \
-  --data "permission=Resource A#Scope A" \
-  --data "permission=Resource B#Scope B"
-
-  curl -X POST \
-  https://${host}:${port}/auth/realms/${realm}/protocol/openid-connect/token \
-  -H "Authorization: Bearer ${access_token}" \
-  --data "grant_type=urn:ietf:params:oauth:grant-type:uma-ticket" \
-  --data "audience={resource_server_client_id}"
-
-  curl -X POST \
-  https://${host}:${port}/auth/realms/${realm}/protocol/openid-connect/token \
-  -H "Authorization: Bearer ${access_token}" \
-  --data "grant_type=urn:ietf:params:oauth:grant-type:uma-ticket" \
-  --data "ticket=${permission_ticket}
+echo ${response2}
