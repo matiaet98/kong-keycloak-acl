@@ -96,7 +96,7 @@ function is_authorized(token_endpoint, audience, resource, scope, access_token)
     body.audience = audience
     body.grant_type = "urn:ietf:params:oauth:grant-type:uma-ticket"
     body.permission = build_permission_string(resource, scope)
-
+    body.response_mode= "decision"
     local res, error = httpc:request_uri(token_endpoint, {
         method = "POST",
         ssl_verify = false, --total, ya lo deberia haber verificado el oidc
@@ -126,7 +126,8 @@ function is_authorized(token_endpoint, audience, resource, scope, access_token)
         ngx.exit(ngx.HTTP_INTERNAL_SERVER_ERROR)
     end
 
-    if parsed_res.result == "true" then
+
+    if parsed_res.result == true then
         return true
     end
 
