@@ -1,7 +1,9 @@
 package = "kong-keycloak-acl"
 version = "1.1.0-0"
 source = {
-   url = "git+https://github.com/matiaet98/kong-keycloak-acl.git"
+   url = "git+https://github.com/matiaet98/kong-keycloak-acl.git",
+   tag = "master",
+   dir = "kong-keycloak-acl"
 }
 description = {
    summary = "A plugin for Kong which enforces Keycloak defined authorization policies",
